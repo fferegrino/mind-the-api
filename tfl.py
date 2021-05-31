@@ -1,3 +1,5 @@
+from typing import Optional
+
 import requests
 import typer
 import os
@@ -11,8 +13,12 @@ lines_app = typer.Typer()
 
 
 @lines_app.command()
-def status():
-    response = requests.get(BASE_URL + "/Line/Mode/tube/Status")
+def status(line_id: Optional[str] = typer.Argument(None)):
+    if line_id is None:
+        response = requests.get(BASE_URL + "/Line/Mode/tube/Status")
+    else:
+        response = requests.get(BASE_URL + f"/Line/{line_id}/Status")
+
     if response.status_code == 200:
         data = response.json()
         for line in data:
