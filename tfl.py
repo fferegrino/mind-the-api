@@ -7,13 +7,18 @@ import os
 BASE_URL = "https://api.tfl.gov.uk"
 APP_KEY = os.environ["TFL_APP_KEY"]
 
-main_app = typer.Typer()
+main_app = typer.Typer(add_completion=False)
 
-lines_app = typer.Typer()
+lines_app = typer.Typer(add_completion=False)
 
 
 @lines_app.command()
 def status(line_id: Optional[str] = typer.Argument(None)):
+    """
+    Show the statuses of all the lines.
+
+    If LINE_ID is specified, this will present the status of that line
+    """
     if line_id is None:
         response = requests.get(BASE_URL + "/Line/Mode/tube/Status")
     else:
